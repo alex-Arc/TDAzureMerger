@@ -13,7 +13,7 @@ def createKinects():
 	Create all other devices
 	"""
 	n = parent().par.Numberofdevices.eval()
-	template = op('Azure1')
+	template = op('Sensor1')
 	for i in range(n - 1):
 		i += 1
 		o = parent().copy(template)
@@ -27,13 +27,14 @@ def recognizeKinects():
 	Gather info from all devices
 	"""
 	target 	= op(parent().par.Inputsop)
-	kinects = target.op('kinectazure1').par.sensor.menuNames
-	n 	=  len(kinects)
+	sensors = target.ops('*')
+	# kinects = target.op('kinectazure1').par.sensor.menuNames
+	n 	=  len(sensors)
 	pairs = n -1
 	options = pairs - 1
 	parent().par.Numberofdevices = n
 	parent().par.Numberofpairs = pairs
-	parent().par.Devices = ','.join(kinects)
+	parent().par.Devices = ','.join([sensor.path for sensor in sensors])
 	parent().par.Currentpair.max = options
 	parent().par.Currentpair.normMax = options
 	return
