@@ -137,8 +137,8 @@ class extAzureCalibration:
 
 	def prepareData(self, pair=[1, 2], voxel_size = 0.05):
 		self.clearData()
-		azureTarget = op('Azure{}'.format(pair[0]))
-		azureSource = op('Azure{}'.format(pair[1]))
+		azureTarget = op('Sensor{}'.format(pair[0]))
+		azureSource = op('Sensor{}'.format(pair[1]))
 		# Perform global registration
 		target = self.createPointcloudObject(azureTarget)
 		source = self.createPointcloudObject(azureSource)
@@ -165,7 +165,7 @@ class extAzureCalibration:
 			method. This could be matrices obtained via CouldCompare, 
 			openCV or even manual alignments
 			"""			
-			op 		= op(f'Azure{pair[1]}')
+			op 		= op(f'Sensor{pair[1]}')
 			matrix 	= [float(v.val) for elem in op.rows() for v in elem]
 			matrix 	= np.array([ matrix[:4], matrix[4:8], matrix[8:12], matrix[12:16]])
 			debug('Using pre-existing matrix at: {}'.format(op.path))
@@ -201,7 +201,7 @@ class extAzureCalibration:
 		# Source is the pointcloud we seek to change and
 		# target the one that we use as reference, hence
 		# we change the source 
-		azureSource = op('Azure{}'.format(pair[1]))
+		azureSource = op('Sensor{}'.format(pair[1]))
 		self.writeMatrixToTable(self.data['matrix'], azureSource.op('transformMatrix'))
 		return 
 
@@ -212,6 +212,6 @@ class extAzureCalibration:
 		                                 		self.data['voxelSize'],  self.data['matrix'] )
 		# Apply final transformation
 		matrix = result_icp.transformation
-		azureSource = op('Azure{}'.format(pair[1]))
+		azureSource = op('Sensor{}'.format(pair[1]))
 		self.writeMatrixToTable(matrix, azureSource.op('transformMatrix'))
 		return
